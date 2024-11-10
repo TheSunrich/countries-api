@@ -46,9 +46,7 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
-// Rutas
 app.use("/countries", countryRoutes_1.default);
-// Iniciar el servidor
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });

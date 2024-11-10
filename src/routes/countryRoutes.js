@@ -6,6 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const countryController_1 = require("../controllers/countryController");
 const router = express_1.default.Router();
-router.get("", countryController_1.listCountries); // Endpoint para listar países
-router.post("", countryController_1.addCountry); // Endpoint para agregar un nuevo país
+router.get("", countryController_1.listCountries);
+router.post("", countryController_1.addCountry);
 exports.default = router;
