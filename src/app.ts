@@ -2,8 +2,11 @@ import express from "express"
 import * as dotevnv from "dotenv"
 import cors from "cors"
 import bodyParser from "body-parser";
-import countryRoutes from "./routes/countryRoutes";
 import mongoose, { ConnectOptions } from 'mongoose';
+
+import indexRouter from './routes/indexRouter';
+import countryRoutes from "./routes/countryRoutes";
+import noteRouter from './routes/noteRouter';
 
 dotevnv.config()
 
@@ -26,7 +29,9 @@ app.use(cors())
 app.use(bodyParser.json());
 
 
+app.use('/', indexRouter);
 app.use("/countries", countryRoutes);
+app.use('/notes', noteRouter)
 
 
 app.listen(PORT, () => {

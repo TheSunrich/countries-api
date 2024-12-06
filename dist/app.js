@@ -30,8 +30,10 @@ const express_1 = __importDefault(require("express"));
 const dotevnv = __importStar(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
-const countryRoutes_1 = __importDefault(require("./routes/countryRoutes"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const indexRouter_1 = __importDefault(require("./routes/indexRouter"));
+const countryRoutes_1 = __importDefault(require("./routes/countryRoutes"));
+const noteRouter_1 = __importDefault(require("./routes/noteRouter"));
 dotevnv.config();
 if (!process.env.PORT) {
     console.log(`No port value specified...`);
@@ -46,7 +48,9 @@ app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
+app.use('/', indexRouter_1.default);
 app.use("/countries", countryRoutes_1.default);
+app.use('/notes', noteRouter_1.default);
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
