@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Country, { ICountry } from '../models/Country';
+import Country from '../models/Country';
 
 export const listCountries = async (req: Request, res: Response): Promise<void> => {
   try {

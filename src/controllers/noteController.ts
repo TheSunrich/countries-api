@@ -4,14 +4,12 @@ import mongoose from "mongoose";
 
 
 export const listNotes = async (req: Request, res: Response): Promise<void> => {
-    const {title, description, status, tags} = req.query;
+    const {title, content} = req.query;
     try {
-        if (title || description || status || tags) {
+        if (title || content) {
             const notes = await Note.find({
                 title: title ? { $regex: new RegExp(title as string, 'i') } : { $exists: true },
-                content: description ? { $regex: new RegExp(description as string, 'i') } : { $exists: true },
-                status: status ? { $regex: new RegExp(status as string, 'i') } : { $exists: true },
-                tags: tags ? { $in: tags as string[] } : { $exists: true }
+                content: content ? { $regex: new RegExp(content as string, 'i') } : { $exists: true },
             });
             res.json(notes);
             return;
@@ -45,13 +43,9 @@ export const addNote = async (req: Request, res: Response): Promise<void> => {
     const {
         title,
         content,
-        initDate,
-        endDate,
-        tags,
-        status
     } = req.body;
 
-    if (!title || !content || !initDate || !endDate || !tags || !status) {
+    if (!title || !content) {
         res.status(400)
             .json({message: 'Attributes are missing'});
         return;
@@ -60,11 +54,7 @@ export const addNote = async (req: Request, res: Response): Promise<void> => {
     try {
         const newNote = new Note({
             title,
-            content,
-            initDate,
-            endDate,
-            tags,
-            status
+            content
         });
         await newNote.save();
         res.json(newNote);
@@ -84,14 +74,10 @@ export const updateNote = async (req: Request, res: Response): Promise<void> => 
 
     const {
         title,
-        content,
-        initDate,
-        endDate,
-        tags,
-        status
+        content
     } = req.body;
 
-    if (!title || !content || !initDate || !endDate || !tags || !status) {
+    if (!title || !content) {
         res.status(400)
             .json({message: 'Attributes are missing'});
         return;
@@ -100,11 +86,7 @@ export const updateNote = async (req: Request, res: Response): Promise<void> => 
     try {
         const note = await Note.findByIdAndUpdate(id, {
             title,
-            content,
-            initDate,
-            endDate,
-            tags,
-            status
+            content
         }, {new: true});
         res.json(note);
     } catch (error) {

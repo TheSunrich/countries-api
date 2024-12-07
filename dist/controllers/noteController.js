@@ -16,14 +16,12 @@ exports.deleteNote = exports.changeStatus = exports.updateNote = exports.addNote
 const Note_1 = __importDefault(require("../models/Note"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const listNotes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, description, status, tags } = req.query;
+    const { title, content } = req.query;
     try {
-        if (title || description || status || tags) {
+        if (title || content) {
             const notes = yield Note_1.default.find({
                 title: title ? { $regex: new RegExp(title, 'i') } : { $exists: true },
-                content: description ? { $regex: new RegExp(description, 'i') } : { $exists: true },
-                status: status ? { $regex: new RegExp(status, 'i') } : { $exists: true },
-                tags: tags ? { $in: tags } : { $exists: true }
+                content: content ? { $regex: new RegExp(content, 'i') } : { $exists: true },
             });
             res.json(notes);
             return;
@@ -55,8 +53,8 @@ const listNotesById = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.listNotesById = listNotesById;
 const addNote = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, content, initDate, endDate, tags, status } = req.body;
-    if (!title || !content || !initDate || !endDate || !tags || !status) {
+    const { title, content, } = req.body;
+    if (!title || !content) {
         res.status(400)
             .json({ message: 'Attributes are missing' });
         return;
@@ -64,11 +62,7 @@ const addNote = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const newNote = new Note_1.default({
             title,
-            content,
-            initDate,
-            endDate,
-            tags,
-            status
+            content
         });
         yield newNote.save();
         res.json(newNote);
@@ -86,8 +80,8 @@ const updateNote = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             .json({ message: 'Invalid ID' });
         return;
     }
-    const { title, content, initDate, endDate, tags, status } = req.body;
-    if (!title || !content || !initDate || !endDate || !tags || !status) {
+    const { title, content } = req.body;
+    if (!title || !content) {
         res.status(400)
             .json({ message: 'Attributes are missing' });
         return;
@@ -95,11 +89,7 @@ const updateNote = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const note = yield Note_1.default.findByIdAndUpdate(id, {
             title,
-            content,
-            initDate,
-            endDate,
-            tags,
-            status
+            content
         }, { new: true });
         res.json(note);
     }
